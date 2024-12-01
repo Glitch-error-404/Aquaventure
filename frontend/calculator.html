@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquaventure: Cool Water Usage Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #00a8ff, #0097e6);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculator-type {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-type button {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calculator-type button.active {
+            background-color: #fff;
+            color: #00a8ff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        input[type="number"]::placeholder, select::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button {
+            background-color: #fff;
+            color: #00a8ff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        button:hover {
+            background-color: #0097e6;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #result {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .shark {
+            position: fixed;
+            bottom: -100px;
+            left: -100px;
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23ffffff" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM144.5 242.2C132.8 233.4 118.3 228 102.5 228c-23.53 0-44.72 11.84-57.97 30.13C32.38 242.1 24 224.7 24 208c0-53.02 42.98-96 96-96c34.19 0 64.72 17.91 82.11 44.94C177.4 166.2 160 188.8 160 216C160 225.1 161.9 234.5 144.5 242.2zM256 336c-17.67 0-32-14.33-32-32s14.33-32 32-32s32 14.33 32 32S273.7 336 256 336zM304 240c-17.67 0-32-14.33-32-32s14.33-32 32-32s32 14.33 32 32S321.7 240 304 240z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: swim 20s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes swim {
+            0% {
+                transform: translate(-100px, 100px) rotate(0deg);
+            }
+            25% {
+                transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(90deg);
+            }
+            50% {
+                transform: translate(calc(100vw + 100px), -100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-100px, -100px) rotate(270deg);
+            }
+            100% {
+                transform: translate(-100px, 100px) rotate(360deg);
+            }
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <a href="login.html" class="nav-button">Login</a>
+        <a href="about.html" class="nav-button">About</a>
+    </div>
+    <div class="shark"></div>
+    <div class="container">
+        <h1>Aquaventure Water Calculator</h1>
+        <div class="calculator-type">
+            <button id="individualBtn" class="active">Individual</button>
+            <button id="familyBtn">Family</button>
+        </div>
+        <form id="waterCalculator">
+            <div id="individualOptions">
+                <div class="form-group">
+                    <label for="showerTime">Shower Time (minutes per day):</label>
+                    <input type="number" id="showerTime" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="toiletFlushes">Toilet Flushes (per day):</label>
+                    <input type="number" id="toiletFlushes" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="brushingTeeth">Brushing Teeth:</label>
+                    <select id="brushingTeeth" required>
+                        <option value="1">Once a day</option>
+                        <option value="2">Twice a day</option>
+                    </select>
+                </div>
+            </div>
+            <div id="familyOptions" style="display: none;">
+                <div class="form-group">
+                    <label for="familyMembers">Number of Family Members:</label>
+                    <input type="number" id="familyMembers" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="avgShowerTime">Average Shower Time (minutes per person):</label>
+                    <input type="number" id="avgShowerTime" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="dishwashing">Dishwashing (times per day):</label>
+                    <input type="number" id="dishwashing" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="laundryLoads">Laundry Loads (per week):</label>
+                    <input type="number" id="laundryLoads" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="outdoorWatering">Outdoor Watering (minutes per week):</label>
+                    <input type="number" id="outdoorWatering" min="0" required>
+                </div>
+            </div>
+            <button type="submit">Calculate Water Usage</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Water usage constants (in liters)
+        const SHOWER_USAGE = 10; // 10 liters per minute
+        const TOILET_FLUSH = 6; // 6 liters per flush
+        const TEETH_BRUSHING = 5; // 5 liters per brushing
+        const DISHWASHING = 50; // 50 liters per wash
+        const LAUNDRY_LOAD = 75; // 75 liters per load
+        const OUTDOOR_WATERING = 15; // 15 liters per minute
+
+        const individualBtn = document.getElementById('individualBtn');
+        const familyBtn = document.getElementById('familyBtn');
+        const individualOptions = document.getElementById('individualOptions');
+        const familyOptions = document.getElementById('familyOptions');
+        const form = document.getElementById('waterCalculator');
+        const result = document.getElementById('result');
+
+        // Load previous usage data
+        let usageHistory = JSON.parse(localStorage.getItem('waterUsageHistory') || '[]');
+
+        individualBtn.addEventListener('click', () => {
+            individualBtn.classList.add('active');
+            familyBtn.classList.remove('active');
+            individualOptions.style.display = 'block';
+            familyOptions.style.display = 'none';
+        });
+
+        familyBtn.addEventListener('click', () => {
+            familyBtn.classList.add('active');
+            individualBtn.classList.remove('active');
+            familyOptions.style.display = 'block';
+            individualOptions.style.display = 'none';
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let totalUsage = 0;
+            let usageBreakdown = {};
+            const date = new Date().toISOString().split('T')[0];
+
+            if (individualBtn.classList.contains('active')) {
+                const showerTime = parseFloat(document.getElementById('showerTime').value);
+                const toiletFlushes = parseFloat(document.getElementById('toiletFlushes').value);
+                const brushingTeeth = parseFloat(document.getElementById('brushingTeeth').value);
+
+                usageBreakdown = {
+                    shower: showerTime * SHOWER_USAGE,
+                    toilet: toiletFlushes * TOILET_FLUSH,
+                    teeth: brushingTeeth * TEETH_BRUSHING
+                };
+            } else {
+                const familyMembers = parseFloat(document.getElementById('familyMembers').value);
+                const avgShowerTime = parseFloat(document.getElementById('avgShowerTime').value);
+                const dishwashing = parseFloat(document.getElementById('dishwashing').value);
+                const laundryLoads = parseFloat(document.getElementById('laundryLoads').value);
+                const outdoorWatering = parseFloat(document.getElementById('outdoorWatering').value);
+
+                usageBreakdown = {
+                    shower: familyMembers * avgShowerTime * SHOWER_USAGE,
+                    dishwashing: dishwashing * DISHWASHING,
+                    laundry: (laundryLoads * LAUNDRY_LOAD) / 7,
+                    outdoor: (outdoorWatering * OUTDOOR_WATERING) / 7
+                };
+            }
+
+            totalUsage = Object.values(usageBreakdown).reduce((a, b) => a + b, 0);
+
+            // Save to localStorage
+            const usageData = {
+                date,
+                totalUsage,
+                breakdown: usageBreakdown,
+                type: individualBtn.classList.contains('active') ? 'individual' : 'family'
+            };
+
+            usageHistory.push(usageData);
+            if (usageHistory.length > 30) { // Keep only last 30 days
+                usageHistory.shift();
+            }
+            localStorage.setItem('waterUsageHistory', JSON.stringify(usageHistory));
+            localStorage.setItem('lastUsageUpdate', date);
+
+            result.textContent = `Estimated daily water usage: ${totalUsage.toFixed(2)} liters`;
+            result.style.opacity = '0';
+            setTimeout(() => {
+                result.style.opacity = '1';
+            }, 100);
+
+            // Redirect to dashboard after saving
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+
+            // Animate the shark
+            const shark = document.querySelector('.shark');
+            shark.style.animation = 'none';
+            shark.offsetHeight;
+            shark.style.animation = null;
+        });
+    </script>
+</body>
+</html>

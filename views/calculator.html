@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Usage Calculator - Aquaventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8ff;
+            --secondary-color: #0097e6;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 168, 255, 0.25);
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .chart-container {
+            margin-top: 2rem;
+            height: 300px;
+        }
+
+        .water-tip {
+            background: rgba(0, 168, 255, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .category-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .calculator-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/dashboard">
+            <img src="https://asset.cloudinary.com/dlbqdjxcy/6afb6f88fa7263bf6d19ee4ba12aab98" alt="Aquaventure Logo" height="30" class="d-inline-block align-top">
+            Aquaventure
+        </a>
+    </nav>
+    <div class="calculator-container">
+        <h2 class="text-center mb-4">Daily Water Usage Calculator</h2>
+        
+        <form id="waterCalculator">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🚿</span>
+                            Shower (minutes)
+                        </label>
+                        <input type="number" class="form-control" name="shower" min="0" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🛁</span>
+                            Bath (times per day)
+                        </label>
+                        <input type="number" class="form-control" name="bath" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🚽</span>
+                            Toilet Flushes
+                        </label>
+                        <input type="number" class="form-control" name="toilet" min="0" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🍽️</span>
+                            Dishwashing (minutes)
+                        </label>
+                        <input type="number" class="form-control" name="dishes" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">👕</span>
+                            Laundry Loads
+                        </label>
+                        <input type="number" class="form-control" name="laundry" min="0" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🥤</span>
+                            Drinking Water (glasses)
+                        </label>
+                        <input type="number" class="form-control" name="drinking" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🍳</span>
+                            Cooking (minutes)
+                        </label>
+                        <input type="number" class="form-control" name="cooking" min="0" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🧹</span>
+                            Cleaning (minutes)
+                        </label>
+                        <input type="number" class="form-control" name="cleaning" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">🌱</span>
+                            Gardening (minutes)
+                        </label>
+                        <input type="number" class="form-control" name="gardening" min="0" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="category-icon">⚡</span>
+                            Other Usage (liters)
+                        </label>
+                        <input type="number" class="form-control" name="other" min="0" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-calculate">Calculate Usage</button>
+        </form>
+
+        <div id="resultContainer" class="result-container">
+            <h3 class="text-center mb-3">Your Daily Water Usage</h3>
+            <div class="chart-container">
+                <canvas id="usageChart"></canvas>
+            </div>
+            <div class="text-center mt-4">
+                <h4>Total Usage: <span id="totalUsage">0</span> liters</h4>
+            </div>
+            <div id="waterTip" class="water-tip mt-4"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const waterUsageRates = {
+            shower: 10,    // liters per minute
+            bath: 80,     // liters per bath
+            toilet: 6,    // liters per flush
+            dishes: 6,    // liters per minute
+            laundry: 50,  // liters per load
+            drinking: 0.25, // liters per glass
+            cooking: 3,    // liters per minute
+            cleaning: 5,   // liters per minute
+            gardening: 12, // liters per minute
+            other: 1      // direct liters
+        };
+
+        let usageChart = null;
+
+        document.getElementById('waterCalculator').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const usage = {};
+            let totalUsage = 0;
+
+            for (const [key, value] of formData.entries()) {
+                const amount = parseFloat(value) * waterUsageRates[key];
+                usage[key] = amount;
+                totalUsage += amount;
+            }
+
+            // Update the result container
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('totalUsage').textContent = Math.round(totalUsage);
+
+            // Create or update the chart
+            const ctx = document.getElementById('usageChart').getContext('2d');
+            
+            if (usageChart) {
+                usageChart.destroy();
+            }
+
+            usageChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(usage).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
+                    datasets: [{
+                        data: Object.values(usage),
+                        backgroundColor: [
+                            '#00a8ff', '#0097e6', '#00cec9', '#00b894',
+                            '#6c5ce7', '#a55eea', '#fd79a8', '#e84393',
+                            '#fdcb6e', '#ffeaa7'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+            // Get water-saving tips from the chatbot
+            try {
+                const response = await fetch('/api/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ usage: totalUsage })
+                });
+
+                const data = await response.json();
+                const tipElement = document.getElementById('waterTip');
+                tipElement.innerHTML = `
+                    <h5>💧 Water Conservation Tips</h5>
+                    <p>${data.message}</p>
+                    <ul>
+                        ${data.tips.map(tip => `<li>${tip}</li>`).join('')}
+                    </ul>
+                `;
+            } catch (error) {
+                console.error('Error fetching tips:', error);
+            }
+
+            // Save the water usage data
+            try {
+                await fetch('/api/water-usage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        totalUsage,
+                        breakdown: usage
+                    })
+                });
+            } catch (error) {
+                console.error('Error saving water usage:', error);
+            }
+        });
+    </script>
+</body>
+</html>

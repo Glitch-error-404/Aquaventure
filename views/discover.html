@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Aquaventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #00a8ff;
+            --secondary-color: #0097e6;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 60px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+        }
+
+        .discover-container {
+            padding: 2rem;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .user-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .water-saved {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .btn-compete {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-compete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .competition-modal .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            border: none;
+        }
+
+        .competition-modal .modal-header {
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .competition-modal .modal-body {
+            padding: 1.5rem;
+        }
+
+        .competition-modal .modal-footer {
+            border-top: none;
+            padding: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            padding: 0.75rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 168, 255, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .discover-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/dashboard">
+                <img src="https://asset.cloudinary.com/dlbqdjxcy/6afb6f88fa7263bf6d19ee4ba12aab98" alt="Aquaventure Logo" height="30" class="d-inline-block align-top">
+                Aquaventure
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calculator.html">Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="discover.html">Discover</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="leaderboard.html">Leaderboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="profile.html" class="nav-link">
+                        <img id="userProfilePic" src="" alt="Profile" style="width: 32px; height: 32px; border-radius: 50%;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="discover-container">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="text-white">Discover Nearby Water Warriors</h2>
+                <p class="text-white-50">Find and challenge other users in your area!</p>
+            </div>
+        </div>
+
+        <div class="row" id="usersList">
+            <!-- User cards will be added here -->
+        </div>
+    </div>
+
+    <!-- Competition Modal -->
+    <div class="modal fade competition-modal" id="competitionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Start a Competition</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="competitionForm">
+                        <input type="hidden" id="targetUserId">
+                        <div class="mb-3">
+                            <label class="form-label">Competition Duration (days)</label>
+                            <input type="number" class="form-control" id="duration" min="1" max="30" value="7" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Water Saving Goal (liters)</label>
+                            <input type="number" class="form-control" id="goal" min="100" step="100" value="1000" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-compete" onclick="sendCompetitionInvite()">Send Invite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Connect to Socket.IO
+        const socket = io('http://localhost:3000');
+
+        // Get user's location and load nearby users
+        function loadNearbyUsers() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    try {
+                        const response = await fetch(`/api/discover/nearby?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+                        const users = await response.json();
+                        displayUsers(users);
+                    } catch (error) {
+                        console.error('Error loading nearby users:', error);
+                    }
+                }, (error) => {
+                    console.error('Error getting location:', error);
+                    loadDefaultUsers();
+                });
+            } else {
+                console.log('Geolocation not supported');
+                loadDefaultUsers();
+            }
+        }
+
+        function loadDefaultUsers() {
+            // Load users without location filtering
+            fetch('/api/discover/users', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(users => displayUsers(users))
+            .catch(error => console.error('Error loading users:', error));
+        }
+
+        function displayUsers(users) {
+            const container = document.getElementById('usersList');
+            container.innerHTML = users.map(user => `
+                <div class="col-md-4 mb-4">
+                    <div class="user-card">
+                        <div class="card-body text-center">
+                            <img src="${user.picture}" alt="${user.name}" class="user-avatar">
+                            <h5 class="mb-2">${user.name}</h5>
+                            <p class="water-saved mb-3">
+                                <i class="bi bi-droplet-fill"></i>
+                                ${Math.round(user.totalWaterSaved)}L saved
+                            </p>
+                            <button class="btn btn-compete" onclick="startCompetition('${user._id}', '${user.name}')">
+                                <i class="bi bi-trophy"></i> Compete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function startCompetition(userId, userName) {
+            document.getElementById('targetUserId').value = userId;
+            document.querySelector('.modal-title').textContent = `Start a Competition with ${userName}`;
+            new bootstrap.Modal(document.getElementById('competitionModal')).show();
+        }
+
+        async function sendCompetitionInvite() {
+            const targetUserId = document.getElementById('targetUserId').value;
+            const duration = document.getElementById('duration').value;
+            const goal = document.getElementById('goal').value;
+
+            try {
+                const response = await fetch('/api/competitions/invite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        targetUserId,
+                        duration: parseInt(duration),
+                        goal: parseInt(goal)
+                    })
+                });
+
+                if (response.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById('competitionModal')).hide();
+                    alert('Competition invitation sent successfully!');
+                } else {
+                    throw new Error('Failed to send invitation');
+                }
+            } catch (error) {
+                console.error('Error sending competition invite:', error);
+                alert('Failed to send competition invitation. Please try again.');
+            }
+        }
+
+        // Socket.IO event handlers
+        socket.on('competition-invite-response', (data) => {
+            if (data.accepted) {
+                alert(`${data.userName} accepted your competition invitation!`);
+            } else {
+                alert(`${data.userName} declined your competition invitation.`);
+            }
+        });
+
+        // Load initial data
+        loadNearbyUsers();
+    </script>
+</body>
+</html>

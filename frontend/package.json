@@ -1,0 +1,17 @@
+{
+  "name": "aquaventure-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Aquaventure water conservation platform",
+  "scripts": {
+    "start": "netlify dev",
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "google-auth-library": "^9.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^12.0.0"
+  }
+}

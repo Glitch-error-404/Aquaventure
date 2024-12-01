@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquaventure - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #00a8ff, #0097e6);
+            color: #fff;
+        }
+
+        .nav-menu {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-widget {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 300px;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+        }
+
+        .chatbot-input button {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .minimize-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .dashboard {
+            padding: 2rem;
+            padding-top: 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .user-info p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        .stat-card .change {
+            font-size: 0.9rem;
+            color: #4cd137;
+        }
+
+        .chart-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .shark {
+            position: fixed;
+            bottom: -100px;
+            left: -100px;
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23ffffff" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM144.5 242.2C132.8 233.4 118.3 228 102.5 228c-23.53 0-44.72 11.84-57.97 30.13C32.38 242.1 24 224.7 24 208c0-53.02 42.98-96 96-96c34.19 0 64.72 17.91 82.11 44.94C177.4 166.2 160 188.8 160 216C160 225.1 161.9 234.5 144.5 242.2zM256 336c-17.67 0-32-14.33-32-32s14.33-32 32-32s32 14.33 32 32S273.7 336 256 336zM304 240c-17.67 0-32-14.33-32-32s14.33-32 32-32s32 14.33 32 32S321.7 240 304 240z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: swim 20s infinite linear;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        @keyframes swim {
+            0% { transform: translate(-100px, 100px) rotate(0deg); }
+            25% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(90deg); }
+            50% { transform: translate(calc(100vw + 100px), -100px) rotate(180deg); }
+            75% { transform: translate(-100px, -100px) rotate(270deg); }
+            100% { transform: translate(-100px, 100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="shark"></div>
+    <nav class="nav-menu">
+        <div>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="calculator.html">Calculator</a>
+            <a href="about.html">About</a>
+        </div>
+        <div>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="welcome-section">
+            <div class="user-info">
+                <h1>Welcome, <span id="userName">User</span>!</h1>
+                <p>Here's your water usage overview</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Today's Usage</h3>
+                <div class="value">120L</div>
+                <div class="change">↓ 5% from yesterday</div>
+            </div>
+            <div class="stat-card">
+                <h3>Weekly Average</h3>
+                <div class="value">850L</div>
+                <div class="change">↓ 3% from last week</div>
+            </div>
+            <div class="stat-card">
+                <h3>Water Saved</h3>
+                <div class="value">2,450L</div>
+                <div class="change">This month</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Weekly Water Usage</h2>
+            <canvas id="weeklyChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Usage Breakdown</h2>
+            <canvas id="breakdownChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chatbot-widget" id="chatbotWidget">
+        <div class="chatbot-header">
+            <h3>Water Conservation Assistant</h3>
+            <button class="minimize-btn" onclick="toggleChatbot()">-</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Messages will be added here -->
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Ask about water conservation...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/';
+        }
+
+        // API endpoints
+        const API_BASE = '/.netlify/functions';
+
+        async function fetchUserData() {
+            try {
+                const response = await fetch(`${API_BASE}/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to fetch user data');
+                const data = await response.json();
+                // Update UI with user data
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load user data');
+            }
+        }
+
+        function updateDashboard(data) {
+            const usageHistory = data.usageHistory;
+            if (usageHistory.length === 0) return;
+
+            // Get today's usage
+            const today = new Date().toISOString().split('T')[0];
+            const todayUsage = usageHistory.find(u => u.date === today);
+            const yesterdayUsage = usageHistory.find(u => {
+                const date = new Date();
+                date.setDate(date.getDate() - 1);
+                return u.date === date.toISOString().split('T')[0];
+            });
+
+            // Update stats cards
+            if (todayUsage) {
+                const todayCard = document.querySelector('.stat-card:nth-child(1) .value');
+                todayCard.textContent = Math.round(todayUsage.totalUsage) + 'L';
+                
+                if (yesterdayUsage) {
+                    const change = ((todayUsage.totalUsage - yesterdayUsage.totalUsage) / yesterdayUsage.totalUsage * 100).toFixed(1);
+                    const changeEl = document.querySelector('.stat-card:nth-child(1) .change');
+                    changeEl.textContent = `${change > 0 ? '↑' : '↓'} ${Math.abs(change)}% from yesterday`;
+                    changeEl.style.color = change > 0 ? '#ff6b6b' : '#4cd137';
+                }
+            }
+
+            // Calculate weekly average
+            const weeklyUsage = usageHistory.slice(-7);
+            if (weeklyUsage.length > 0) {
+                const weeklyAvg = weeklyUsage.reduce((acc, curr) => acc + curr.totalUsage, 0) / weeklyUsage.length;
+                document.querySelector('.stat-card:nth-child(2) .value').textContent = Math.round(weeklyAvg) + 'L';
+            }
+
+            // Calculate water saved (compared to average consumption of 150L per day)
+            const monthlyUsage = usageHistory.slice(-30);
+            if (monthlyUsage.length > 0) {
+                const waterSaved = monthlyUsage.reduce((acc, curr) => acc + (150 - curr.totalUsage), 0);
+                document.querySelector('.stat-card:nth-child(3) .value').textContent = Math.round(waterSaved) + 'L';
+            }
+
+            // Update weekly chart
+            const weeklyData = Array(7).fill(0);
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const today = new Date();
+            const labels = [];
+
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const usage = usageHistory.find(u => u.date === date.toISOString().split('T')[0]);
+                weeklyData[6-i] = usage ? usage.totalUsage : 0;
+                labels.push(days[date.getDay()]);
+            }
+
+            // Update weekly chart
+            const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+            new Chart(weeklyCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Water Usage (Liters)',
+                        data: weeklyData,
+                        borderColor: '#fff',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#fff'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#fff'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Update breakdown chart
+            if (todayUsage) {
+                const breakdownCtx = document.getElementById('breakdownChart').getContext('2d');
+                const breakdownData = todayUsage.breakdown;
+                new Chart(breakdownCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(breakdownData).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
+                        datasets: [{
+                            data: Object.values(breakdownData),
+                            backgroundColor: [
+                                '#00a8ff',
+                                '#0097e6',
+                                '#00d2d3',
+                                '#2ecc71',
+                                '#a8e6cf'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#fff'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        fetchUserData();
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        });
+
+        let chatbotMinimized = false;
+
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbotWidget');
+            const messages = document.querySelector('.chatbot-messages');
+            const input = document.querySelector('.chatbot-input');
+            
+            if (chatbotMinimized) {
+                messages.style.display = 'block';
+                input.style.display = 'flex';
+                document.querySelector('.minimize-btn').textContent = '-';
+            } else {
+                messages.style.display = 'none';
+                input.style.display = 'none';
+                document.querySelector('.minimize-btn').textContent = '+';
+            }
+            
+            chatbotMinimized = !chatbotMinimized;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messages = document.getElementById('chatbotMessages');
+            messages.innerHTML += `
+                <div class="user-message">
+                    <p>${message}</p>
+                </div>
+            `;
+
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+
+            try {
+                const response = await fetch(`${API_BASE}/chatbot`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                messages.innerHTML += `
+                    <div class="bot-message">
+                        <p>${data.message}</p>
+                    </div>
+                `;
+                messages.scrollTop = messages.scrollHeight;
+            } catch (error) {
+                console.error('Chatbot error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

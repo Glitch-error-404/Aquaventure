@@ -1,0 +1,10 @@
+{
+  "name": "aquaventure-netlify-functions",
+  "version": "1.0.0",
+  "description": "Netlify Functions for Aquaventure",
+  "dependencies": {
+    "google-auth-library": "^9.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0"
+  }
+}

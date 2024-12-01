@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Aquaventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="js/config.js"></script>
+    <style>
+        :root {
+            --primary-color: #00a8ff;
+            --secondary-color: #0097e6;
+            --background-color: #f5f6fa;
+            --text-color: #2f3640;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        [data-theme="dark"] {
+            --background-color: #2f3640;
+            --text-color: #f5f6fa;
+            --card-bg: rgba(47, 54, 64, 0.9);
+        }
+
+        [data-theme="ocean"] {
+            --primary-color: #00a8ff;
+            --secondary-color: #0097e6;
+            --background-color: #192a56;
+            --text-color: #f5f6fa;
+            --card-bg: rgba(25, 42, 86, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .badge {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .badge i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .settings-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .setting-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .setting-item input[type="text"],
+        .setting-item input[type="number"],
+        .setting-item select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            background: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .setting-item .toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+        }
+
+        .btn-danger:hover {
+            background: #ff4757;
+        }
+
+        .nav-menu {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-menu">
+            <div>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="calculator.html">Calculator</a>
+                <a href="about.html">About</a>
+            </div>
+            <div>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </nav>
+
+        <div class="profile-header">
+            <img src="" alt="Profile Picture" class="profile-picture" id="profilePicture">
+            <div class="profile-info">
+                <h1 id="userName">Loading...</h1>
+                <p id="userEmail">Loading...</p>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-card">
+                <h3>Current Streak</h3>
+                <div id="currentStreak">0 days</div>
+            </div>
+            <div class="stat-card">
+                <h3>Longest Streak</h3>
+                <div id="longestStreak">0 days</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Water Saved</h3>
+                <div id="totalSaved">0 L</div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>Settings</h2>
+            <form id="settingsForm" class="settings-grid">
+                <div>
+                    <div class="setting-item">
+                        <label for="name">Display Name</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div class="setting-item">
+                        <label for="waterGoal">Daily Water Goal (L)</label>
+                        <input type="number" id="waterGoal" name="waterGoal" min="0" step="1">
+                    </div>
+                    <div class="setting-item">
+                        <label for="theme">Theme</label>
+                        <select id="theme" name="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="ocean">Ocean</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="setting-item">
+                        <label>Notifications</label>
+                        <div class="toggle">
+                            <input type="checkbox" id="emailNotif" name="emailNotif">
+                            <label for="emailNotif">Email Notifications</label>
+                        </div>
+                        <div class="toggle">
+                            <input type="checkbox" id="dailyReminder" name="dailyReminder">
+                            <label for="dailyReminder">Daily Reminder</label>
+                        </div>
+                        <div class="toggle">
+                            <input type="checkbox" id="achievementNotif" name="achievementNotif">
+                            <label for="achievementNotif">Achievement Notifications</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button class="btn" onclick="saveSettings()">Save Changes</button>
+            <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+        </div>
+
+        <div class="settings-section">
+            <h2>Badges</h2>
+            <div class="badge-grid" id="badgeGrid">
+                <!-- Badges will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${config.API_URL}/user/${user._id}`);
+                currentUser = await response.json();
+
+                // Update profile info
+                document.getElementById('profilePicture').src = currentUser.picture;
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userEmail').textContent = currentUser.email;
+
+                // Update form fields
+                document.getElementById('name').value = currentUser.name;
+                document.getElementById('waterGoal').value = currentUser.waterGoal;
+                document.getElementById('theme').value = currentUser.theme;
+                document.getElementById('emailNotif').checked = currentUser.notifications.email;
+                document.getElementById('dailyReminder').checked = currentUser.notifications.dailyReminder;
+                document.getElementById('achievementNotif').checked = currentUser.notifications.achievements;
+
+                // Update stats
+                document.getElementById('currentStreak').textContent = `${currentUser.streak.current} days`;
+                document.getElementById('longestStreak').textContent = `${currentUser.streak.longest} days`;
+
+                // Load badges
+                loadBadges();
+
+                // Apply theme
+                document.body.setAttribute('data-theme', currentUser.theme);
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+
+        async function loadBadges() {
+            try {
+                const response = await fetch(`${config.API_URL}/badges/${currentUser._id}`);
+                const badges = await response.json();
+
+                const badgeGrid = document.getElementById('badgeGrid');
+                badgeGrid.innerHTML = badges.map(badge => `
+                    <div class="badge">
+                        <i class="fas fa-award"></i>
+                        <h4>${badge.name}</h4>
+                        <p>${badge.description}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load badges:', error);
+            }
+        }
+
+        async function saveSettings() {
+            try {
+                const settings = {
+                    name: document.getElementById('name').value,
+                    waterGoal: parseInt(document.getElementById('waterGoal').value),
+                    theme: document.getElementById('theme').value,
+                    notifications: {
+                        email: document.getElementById('emailNotif').checked,
+                        dailyReminder: document.getElementById('dailyReminder').checked,
+                        achievements: document.getElementById('achievementNotif').checked
+                    }
+                };
+
+                const response = await fetch(`${config.API_URL}/user/${currentUser._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(settings)
+                });
+
+                const updatedUser = await response.json();
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                document.body.setAttribute('data-theme', updatedUser.theme);
+                alert('Settings saved successfully!');
+            } catch (error) {
+                console.error('Failed to save settings:', error);
+                alert('Failed to save settings. Please try again.');
+            }
+        }
+
+        async function deleteAccount() {
+            if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await fetch(`${config.API_URL}/user/${currentUser._id}`, {
+                    method: 'DELETE'
+                });
+
+                localStorage.clear();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Failed to delete account:', error);
+                alert('Failed to delete account. Please try again.');
+            }
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        });
+
+        // Load profile on page load
+        loadUserProfile();
+    </script>
+</body>
+</html>

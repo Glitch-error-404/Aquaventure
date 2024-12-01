@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Aquaventure</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #00a8ff, #0097e6);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .section {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .shark {
+            position: fixed;
+            bottom: -100px;
+            left: -100px;
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23ffffff" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM144.5 242.2C132.8 233.4 118.3 228 102.5 228c-23.53 0-44.72 11.84-57.97 30.13C32.38 242.1 24 224.7 24 208c0-53.02 42.98-96 96-96c34.19 0 64.72 17.91 82.11 44.94C177.4 166.2 160 188.8 160 216C160 225.1 161.9 234.5 144.5 242.2zM256 336c-17.67 0-32-14.33-32-32s14.33-32 32-32s32 14.33 32 32S273.7 336 256 336zM304 240c-17.67 0-32-14.33-32-32s14.33-32 32-32s32 14.33 32 32S321.7 240 304 240z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: swim 20s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes swim {
+            0% { transform: translate(-100px, 100px) rotate(0deg); }
+            25% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(90deg); }
+            50% { transform: translate(calc(100vw + 100px), -100px) rotate(180deg); }
+            75% { transform: translate(-100px, -100px) rotate(270deg); }
+            100% { transform: translate(-100px, 100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="login.html">Login</a>
+        <a href="calculator.html">Calculator</a>
+    </nav>
+    <div class="shark"></div>
+    <div class="container">
+        <h1>About Aquaventure</h1>
+        <div class="content">
+            <div class="section">
+                <h2>Our Mission</h2>
+                <p>Aquaventure is dedicated to promoting water conservation and environmental awareness. We believe that understanding our water usage is the first step toward making meaningful changes in our daily lives.</p>
+            </div>
+            <div class="section">
+                <h2>How It Works</h2>
+                <p>Our advanced calculator helps you track your water consumption by analyzing your daily activities. Whether you're an individual or a family, we provide personalized insights and recommendations to reduce your water footprint.</p>
+            </div>
+            <div class="section">
+                <h2>Why Water Conservation?</h2>
+                <p>Water is a precious resource, and every drop counts. By being mindful of our water usage, we can contribute to environmental sustainability and ensure clean water availability for future generations.</p>
+            </div>
+            <div class="section">
+                <h2>Get Started</h2>
+                <p>Sign up today to start tracking your water usage, receive personalized recommendations, and join our community of environmentally conscious individuals making a difference, one drop at a time.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
